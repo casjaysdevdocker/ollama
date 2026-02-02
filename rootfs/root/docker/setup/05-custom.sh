@@ -83,8 +83,14 @@ python3 --version
 echo "Installing Open WebUI..."
 
 # Install Open WebUI using system Python (requires --break-system-packages in Docker)
+# Split installation to avoid buildx timeout on large pip operations
 python3 -m pip install --break-system-packages --upgrade pip
-python3 -m pip install --break-system-packages open-webui
+
+# Install with optimized flags to reduce build time and memory
+# --no-cache-dir: Prevents caching to save space and avoid timeout issues
+# --disable-pip-version-check: Faster installation
+echo "Installing Open WebUI dependencies (this may take several minutes)..."
+python3 -m pip install --break-system-packages --no-cache-dir --disable-pip-version-check open-webui
 
 # Verify Open WebUI installation  
 if python3 -m open_webui --help >/dev/null 2>&1; then
@@ -94,6 +100,9 @@ elif command -v open-webui >/dev/null 2>&1; then
 else
   echo "⚠ Warning: Open WebUI may not be in PATH, but should be installed"
 fi
+
+# Clean pip cache to reduce image size
+python3 -m pip cache purge 2>/dev/null || true
 
 echo "✓ Ollama and Open WebUI installation complete"
 

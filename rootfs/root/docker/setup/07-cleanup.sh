@@ -36,6 +36,14 @@ if [ -d "$HOME/.cache" ]; then rm -Rf "$HOME/.cache"; fi
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # Main script
 
+# Clean up pip cache and temporary Python files to reduce image size
+if command -v python3 >/dev/null 2>&1; then
+  python3 -m pip cache purge 2>/dev/null || true
+  find /usr -type d -name '__pycache__' -exec rm -rf {} + 2>/dev/null || true
+  find /usr -type f -name '*.pyc' -delete 2>/dev/null || true
+  find /usr -type f -name '*.pyo' -delete 2>/dev/null || true
+fi
+
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # Set the exit code
 #exitCode=$?
