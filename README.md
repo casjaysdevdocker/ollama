@@ -176,8 +176,8 @@ dockermgr update ollama
 ## Install and run container
   
 ```shell
-dockerHome="/var/lib/srv/$USER/docker/casjaysdevdocker/ollama/ollama/latest/rootfs"
-mkdir -p "/var/lib/srv/$USER/docker/ollama/rootfs"
+dockerHome="/var/lib/srv/$USER/docker/casjaysdevdocker/ollama/ollama/latest/volumes"
+mkdir -p "/var/lib/srv/$USER/docker/ollama/volumes"
 git clone "https://github.com/dockermgr/ollama" "$HOME/.local/share/CasjaysDev/dockermgr/ollama"
 cp -Rfva "$HOME/.local/share/CasjaysDev/dockermgr/ollama/rootfs/." "$dockerHome/"
 
@@ -644,8 +644,8 @@ services:
       - HOSTNAME=ollama
       - MODELS=llama3.2,mistral,phi
     volumes:
-      - "/var/lib/srv/$USER/docker/casjaysdevdocker/ollama/ollama/latest/rootfs/data:/data:z"
-      - "/var/lib/srv/$USER/docker/casjaysdevdocker/ollama/ollama/latest/rootfs/config:/config:z"
+      - "/var/lib/srv/$USER/docker/casjaysdevdocker/ollama/ollama/latest/volumes/data:/data:z"
+      - "/var/lib/srv/$USER/docker/casjaysdevdocker/ollama/ollama/latest/volumes/config:/config:z"
     ports:
       - 11434:11434
       - 64080:80
