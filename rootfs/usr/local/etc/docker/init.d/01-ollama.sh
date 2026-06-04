@@ -50,7 +50,7 @@ __trap_err_handler() {
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 SCRIPT_FILE="$0"
 SERVICE_NAME="ollama"
-SCRIPT_NAME="$(basename -- "$SCRIPT_FILE" 2>/dev/null)"
+SCRIPT_NAME="${SCRIPT_FILE##*/}"
 # - - - - - - - - - - - - - - - - - - - - - - - - -
 # Function to exit appropriately based on context
 __script_exit() {
@@ -282,7 +282,8 @@ __execute_prerun() {
   # Define actions/commands
   
   # CPU Optimization: Configure OpenBLAS for optimal performance
-  export OPENBLAS_NUM_THREADS="${OLLAMA_NUM_THREADS:-0}"  # 0 = auto-detect cores
+  # 0 = auto-detect cores
+  export OPENBLAS_NUM_THREADS="${OLLAMA_NUM_THREADS:-0}"
   export OMP_NUM_THREADS="${OLLAMA_NUM_THREADS:-0}"
   
   # Detect and configure for available hardware
@@ -730,7 +731,7 @@ fi
 # default exit code
 SERVICE_EXIT_CODE=0
 # application specific
-EXEC_CMD_NAME="$(basename -- "$EXEC_CMD_BIN")"
+EXEC_CMD_NAME="${EXEC_CMD_BIN##*/}"
 SERVICE_PID_FILE="/run/init.d/$EXEC_CMD_NAME.pid"
 SERVICE_PID_NUMBER="$(__pgrep "$EXEC_CMD_NAME" 2>/dev/null || echo '')"
 if type -P "$EXEC_CMD_BIN" &>/dev/null; then
